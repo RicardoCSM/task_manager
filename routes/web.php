@@ -18,7 +18,7 @@ use App\Http\Controllers\RegisterController;
 
 Route::get('/', function () {
     return view('site.index', ['title' => 'Index']);
-});
+})->name('site.index');
 
 Route::get('/register', [RegisterController::class, 'index'])->name('site.register');
 Route::post('/register', [RegisterController::class, 'store'])->name('site.register');
@@ -27,8 +27,9 @@ Route::get('/login', [LoginController::class, 'index'] )->name('site.login');
 Route::post('/login', [LoginController::class, 'auth'] )->name('site.login');
 
 
-Route::middleware('auth')->prefix('/app')->group(function() { 
+Route::middleware('login')->prefix('/app')->group(function() { 
     Route::get('/home', function () {
-        return 'Aqui';
+        return view('app.home', ['title' => 'Home']);
     })->name('app.home');
+    Route::get('/exit', [LoginController::class, 'exit'])->name('app.exit'); 
 });   
