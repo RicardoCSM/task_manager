@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,5 @@ Route::middleware('login')->prefix('/app')->group(function() {
         return view('app.home', ['title' => 'Home']);
     })->name('app.home');
     Route::get('/exit', [LoginController::class, 'exit'])->name('app.exit'); 
+    Route::resource('/task', TaskController::class);
 });   
