@@ -12,5 +12,10 @@ class Task extends Model
     protected $fillable = [
         'task',
         'completion_deadline',
+        'user_id'
     ];
+
+    public function user() {
+        return $this->belongsTo('App\Models\User');
+    }
 }

@@ -7,10 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto me-5 mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{route('site.login')}}">Home</a>
+          <a class="nav-link {{ Request::routeIs('site.index') ? 'active' : '' }}" aria-current="page" href="{{route('site.index')}}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link {{ Request::routeIs('site.about') ? 'active' : '' }}" href="{{route('site.about')}}">About</a>
         </li>
       </ul>
         <form class="d-flex">

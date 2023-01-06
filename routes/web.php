@@ -21,6 +21,10 @@ Route::get('/', function () {
     return view('site.index', ['title' => 'Index']);
 })->name('site.index');
 
+Route::get('/about', function () {
+    return view('site.about', ['title' => 'About']);
+})->name('site.about');
+
 Route::get('/register', [RegisterController::class, 'index'])->name('site.register');
 Route::post('/register', [RegisterController::class, 'store'])->name('site.register');
 

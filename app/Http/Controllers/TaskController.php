@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use Carbon\Carbon;
+use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -15,7 +16,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with(['task', 'completion_deadline'])->get();
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();
+        $tasks = Task::where('user_id', $user->id)->get();
         foreach ($tasks as $task) {
             $task['completion_deadline'] = Carbon::parse($task['completion_deadline'])->format('d/m/Y');
         };
@@ -41,6 +44,9 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $data = $request->all('task', 'completion_deadline');
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();
+        $data['user_id'] = $user->id;
         $task = Task::create($data);
         return redirect()->route('task.show', ['task' => $task->id]);
     }
@@ -64,7 +70,13 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('app.edit', ['title' => 'Editar', 'task' => $task]);
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();
+        if($task->user_id == $user->id){
+            return view('app.edit', ['title' => 'Edit', 'task' => $task]);
+        } else {
+            return view('app.access_denied', ['title' => 'Access Denied']);
+        }
     }
 
     /**
@@ -76,6 +88,13 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();
+
+        if(!$tarefa->user_id == $user->id){
+            return view('app.access_denied', ['title' => 'Access Denied']);
+        }
+
         $task->update($request->all());
         return view('app.show', ['title' => $task->task, 'task' => $task]);
     }
@@ -88,6 +107,13 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();
+
+        if(!$tarefa->user_id == $user->id){
+            return view('app.access_denied', ['title' => 'Access Denied']);
+        }
+
         $tarefa->delete();
     }
 }
