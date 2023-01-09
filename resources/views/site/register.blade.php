@@ -3,7 +3,7 @@
 @section('title', $title)
 
 @section('content')
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-5 mb-5">
 
         <div class="card">
             <div class="card-header">

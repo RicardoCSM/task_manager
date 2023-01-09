@@ -4,13 +4,14 @@
 
 @section('content')
 
-<div class="container-fluid mt-5">
-    <table class="table table-bordered">
+<div class="container mt-5">
+    <table class="table table-bordered border-primary">
         <thead>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Task</th>
                 <th scope="col">Completion Deadline</th>
+                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
