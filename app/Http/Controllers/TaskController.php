@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
-use Carbon\Carbon;
 use App\Models\User;
 
 class TaskController extends Controller
@@ -14,15 +13,21 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
-        $tasks = Task::where('user_id', $user->id)->get();
-        foreach ($tasks as $task) {
-            $task['completion_deadline'] = Carbon::parse($task['completion_deadline'])->format('d/m/Y');
-        };
-        return view('app.list', ['title' => 'Task List','tasks' => $tasks]);
+        $order= 'created_at';
+
+        if($request->orderby) {
+            $order = $request->orderby;
+        }
+        
+        $search = $request->search;
+
+        $tasks = Task::where('user_id', $user->id)->where('task', 'like', "%$search%")->orderBy($order)->paginate(8);
+
+        return view('app.list', ['title' => 'Task List','tasks' => $tasks, 'request' => $request->all(), 'orderby' => $order]);
     }
 
     /**
