@@ -3,7 +3,6 @@
 @section('title', $title)
 
 @section('content')
-
 <div class="container mt-5">
     <div class="row mb-3">
         <div class="col-md-7">
@@ -11,7 +10,8 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label" for="search">Search task:</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="search" name="search">
+                        <input value="{{$request['search'] ?? ''}}" type="text" class="form-control" id="search" name="search">
+                        <input type="hidden" name="orderby" value="{{ request()->query('orderby') }}">
                     </div>
                     <button class="col-sm-2 btn btn-sm btn-primary" type="submit">Search</button>
                 </div>
@@ -27,6 +27,7 @@
                             <option value="created_at" {{ request()->query('orderby') === 'created_at' ? 'selected':'' }}>Date Created</option>
                             <option value="completion_deadline" {{ request()->query('orderby') === 'completion_deadline' ? 'selected':'' }}>Completion Deadline</option>
                         </select>
+                        <input type="hidden" name="search" value="{{ request()->query('search') }}">
                     </div>
                     <button class="col-sm-2 btn btn-sm btn-primary" type="submit">Sort</button>
                 </div>

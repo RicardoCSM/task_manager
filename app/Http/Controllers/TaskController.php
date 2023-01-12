@@ -17,17 +17,21 @@ class TaskController extends Controller
     {
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
-        $order= 'created_at';
-
-        if($request->orderby) {
-            $order = $request->orderby;
-        }
         
-        $search = $request->search;
+        $search = $request->search ?? '';
+        $order = $request->orderby ?? 'created_at';
+        
+        $tasks = Task::where('user_id', $user->id);
+        
+        if($search) {
+            $tasks = $tasks->where('task', 'like', "%$search%");
+        }
+        if($order) {
+            $tasks = $tasks->orderBy($order);
+        }
+        $tasks = $tasks->paginate(8)->appends(request()->except(['page']));
 
-        $tasks = Task::where('user_id', $user->id)->where('task', 'like', "%$search%")->orderBy($order)->paginate(8);
-
-        return view('app.list', ['title' => 'Task List','tasks' => $tasks, 'request' => $request->all(), 'orderby' => $order]);
+        return view('app.list', ['title' => 'Task List','tasks' => $tasks, 'request' => $request->all()]);
     }
 
     /**
