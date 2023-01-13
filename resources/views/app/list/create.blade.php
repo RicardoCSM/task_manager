@@ -7,15 +7,15 @@
 
         <div class="card">
             <div class="card-header">
-                Sign Up
+                Create New List
             </div>
             <div class="card-body">
-                <form action={{ route('task.store')}} method="post">
+                <form action={{ route('list.store')}} method="post">
                     @csrf
                     <div class="mb-3">
-                        <label class="form-label">Task</label>
-                        <input type="text" class="form-control @error('task') is-invalid @enderror" name="task" required>
-                        @error('task')
+                        <label class="form-label">List</label>
+                        <input type="text" class="form-control @error('list') is-invalid @enderror" name="list" required>
+                        @error('list')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -23,9 +23,9 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Completion Deadline</label>
-                        <input type="date" class="form-control @error('completion_deadline') is-invalid @enderror" name="completion_deadline" required>
-                        @error('completion_deadline')
+                        <label class="form-label">List Description</label>
+                        <textarea class="form-control @error('desc') is-invalid @enderror" name="desc"></textarea>
+                        @error('desc')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

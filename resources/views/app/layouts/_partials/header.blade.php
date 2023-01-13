@@ -10,14 +10,19 @@
           <ul class="navbar-nav ms-auto me-5 mb-2 mb-lg-0">
             @if (!Request::routeIs('app.home'))
               <li class="nav-item">
-                <a class="nav-link {{ Request::routeIs('task.index') ? 'active' : '' }}" href="{{route('task.index')}}">List</a>
+                <a class="nav-link {{ Request::routeIs('task.index') ? 'active' : '' }}" href="{{route('task.index')}}">Tasks</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link {{ Request::routeIs('task.create') ? 'active' : '' }}" href="{{route('task.create')}}">Create</a>
+                <a class="nav-link {{ Request::routeIs('task.create') ? 'active' : '' }}" href="{{route('task.create')}}">Create Task</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('list.index') ? 'active' : '' }}" href="{{route('list.index')}}">Lists</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('list.create') ? 'active' : '' }}" href="{{route('list.create')}}">Create List</a>
               </li>
             @endif
           </ul>
-
           <form class="d-flex">
             <a href="{{route('app.exit')}}" class="btn btn-outline-primary me-2 pt-2" >Log out</a>
           </form>

@@ -7,16 +7,16 @@
 
         <div class="card">
             <div class="card-header">
-                Sign Up
+                Edit List
             </div>
             <div class="card-body">
-                <form action={{ route('task.update', ['task' => $task->id])}} method="post">
+                <form action={{ route('list.update', ['list' => $list->id])}} method="post">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
-                        <label class="form-label">Task</label>
-                        <input value="{{$task->task}}" type="text" class="form-control @error('task') is-invalid @enderror" name="task" required>
-                        @error('task')
+                        <label class="form-label">List</label>
+                        <input value="{{$list->list}}" type="text" class="form-control @error('list') is-invalid @enderror" name="list" required>
+                        @error('list')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -24,9 +24,9 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Completion Deadline</label>
-                        <input value="{{$task->completion_deadline}}" type="date" class="form-control @error('completion_deadline') is-invalid @enderror" name="completion_deadline" required>
-                        @error('completion_deadline')
+                        <label class="form-label">List Description</label>
+                        <textarea class="form-control @error('desc') is-invalid @enderror" name="desc">{{$list->desc}}</textarea>
+                        @error('desc')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ListController;
 use App\Http\Controllers\FilterController;
 
 /*
@@ -38,8 +39,11 @@ Route::middleware('login')->prefix('/app')->group(function() {
         return view('app.home', ['title' => 'Home']);
     })->name('app.home');
     Route::get('/exit', [LoginController::class, 'exit'])->name('app.exit'); 
+
     Route::resource('/task', TaskController::class);
 
     Route::get('/search', [FilterController::class, 'search'])->name('app.search');
     Route::get('/orderby', [FilterController::class, 'orderby'])->name('app.orderby');
+
+    Route::resource('/list', ListController::class);
 });   

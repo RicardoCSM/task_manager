@@ -13,7 +13,6 @@
             <a href="{{route('task.index')}}" class="btn btn-lg btn-primary">Back</a>
         </div>
 </div>
-<br>
 
 
 @endsection

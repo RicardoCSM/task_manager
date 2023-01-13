@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\TaskList;
 use App\Models\Task;
 use App\Models\User;
 
@@ -22,7 +23,7 @@ class TaskController extends Controller
         $order = $request->orderby ?? 'created_at';
         
         $tasks = Task::where('user_id', $user->id);
-        
+
         if($search) {
             $tasks = $tasks->where('task', 'like', "%$search%");
         }
@@ -31,7 +32,7 @@ class TaskController extends Controller
         }
         $tasks = $tasks->paginate(8)->appends(request()->except(['page']));
 
-        return view('app.list', ['title' => 'Task List','tasks' => $tasks, 'request' => $request->all()]);
+        return view('app.task.index', ['title' => 'Task Index','tasks' => $tasks, 'request' => $request->all()]);
     }
 
     /**
@@ -39,9 +40,14 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('app.create', ['title' => 'Create Task']);
+        $list_id = $request->input('list_id') ?? '';
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();
+        $lists = TaskList::where('user_id', $user->id)->get();
+
+        return view('app.task.create', ['title' => 'Create Task', 'lists' => $lists, 'selected_list_id' => $list_id]);
     }
 
     /**
@@ -52,7 +58,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all('task', 'completion_deadline');
+        $data = $request->all('task', 'completion_deadline', 'list_id');
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
         $data['user_id'] = $user->id;
@@ -63,18 +69,18 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Task $task
      * @return \Illuminate\Http\Response
      */
     public function show(Task $task)
     {
-        return view('app.show', ['title' => $task->task, 'task' => $task]);
+        return view('app.task.show', ['title' => $task->task, 'task' => $task]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  Task $task
      * @return \Illuminate\Http\Response
      */
     public function edit(Task $task)
@@ -82,9 +88,9 @@ class TaskController extends Controller
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
         if($task->user_id == $user->id){
-            return view('app.edit', ['title' => 'Edit', 'task' => $task]);
+            return view('app.task.edit', ['title' => 'Edit', 'task' => $task]);
         } else {
-            return view('app.access_denied', ['title' => 'Access Denied']);
+            return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
     }
 
@@ -92,7 +98,7 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  Task $task
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Task $task)
@@ -100,18 +106,18 @@ class TaskController extends Controller
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
 
-        if(!$tarefa->user_id == $user->id){
-            return view('app.access_denied', ['title' => 'Access Denied']);
+        if(!$task->user_id == $user->id){
+            return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
 
         $task->update($request->all());
-        return view('app.show', ['title' => $task->task, 'task' => $task]);
+        return view('app.task.show', ['title' => $task->task, 'task' => $task]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  Task $task
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
@@ -119,10 +125,11 @@ class TaskController extends Controller
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
 
-        if(!$tarefa->user_id == $user->id){
-            return view('app.access_denied', ['title' => 'Access Denied']);
+        if(!$task->user_id == $user->id){
+            return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
 
-        $tarefa->delete();
+        $task->delete();
+        return redirect()->route('task.index');
     }
 }
