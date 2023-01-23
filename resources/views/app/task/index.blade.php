@@ -3,42 +3,44 @@
 @section('title', $title)
 
 @section('content')
-<div class="container mt-5">
-    <div class="row mb-3">
-        <div class="col-md-7">
-            <form action="{{ route('app.search') }}" method="GET">
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="search">Search task:</label>
-                    <div class="col-sm-8">
-                        <input value="{{$request['search'] ?? ''}}" type="text" class="form-control" id="search" name="search">
-                        <input type="hidden" name="orderby" value="{{ request()->query('orderby') }}">
-                    </div>
-                    <button class="col-sm-2 btn btn-sm btn-primary" type="submit">Search</button>
+<div class="container mt-3">
+    <nav class="navbar navbar-expand-md">
+        <button class="navbar-toggler mb-2" type="button" data-toggle="collapse" data-target="#filterCollapse">
+            <i class="fa fa-filter text-primary"></i>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="filterCollapse">
+            <form class="form-inline my-2 my-lg-0" action="{{ route('app.orderby') }}" method="GET">
+                <div class="input-group">
+                    <span class="input-group-text">Sort by</span>
+                    <select class="form-select" name="orderby" id="orderby">
+                        <option value="created_at" {{ request()->query('orderby') === 'created_at' ? 'selected':'' }}>Date Created</option>
+                        <option value="completion_deadline" {{ request()->query('orderby') === 'completion_deadline' ? 'selected':'' }}>Completion Deadline</option>
+                    </select>
+                    <input type="hidden" name="search" value="{{ request()->query('search') }}">
+                    <span>
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit">Sort</button>
+                    </span>
                 </div>
             </form>
-        </div>
-        
-        <div class="col-md-5">
-            <form action="{{ route('app.orderby') }}" method="GET">
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="orderby">Sort by:</label>
-                    <div  class="col-sm-8">
-                        <select class="form-control" name="orderby" id="orderby">
-                            <option value="created_at" {{ request()->query('orderby') === 'created_at' ? 'selected':'' }}>Date Created</option>
-                            <option value="completion_deadline" {{ request()->query('orderby') === 'completion_deadline' ? 'selected':'' }}>Completion Deadline</option>
-                        </select>
-                        <input type="hidden" name="search" value="{{ request()->query('search') }}">
-                    </div>
-                    <button class="col-sm-2 btn btn-sm btn-primary" type="submit">Sort</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <table class="table table-bordered border-primary">
-        <thead>
+            <form class="form-inline my-2 my-lg-0" action="{{ route('app.search') }}" method="GET">
+                <div class="input-group">
+                    <input value="{{$request['search'] ?? ''}}" placeholder="Search" aria-label="Search" type="search" class="form-control mr-sm-2" id="search" name="search">
+                    <input type="hidden" name="orderby" value="{{ request()->query('orderby') }}">
+                    <span>
+                        <button class="btn btn-primary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
+</div>
+
+<div class="container mt-2">
+    <table class="table">
+        <thead class="bg-primary text-light">
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col">#</th>
                 <th scope="col">Task</th>
                 <th scope="col">Completion Deadline</th>
                 <th scope="col"></th>

@@ -5,8 +5,8 @@
 @section('content')
     <div class="container-fluid mt-5">
 
-        <div class="card">
-            <div class="card-header">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-light">
                 Create New List
             </div>
             <div class="card-body">
@@ -25,15 +25,9 @@
                     <div class="mb-3">
                         <label class="form-label">List Description</label>
                         <textarea class="form-control @error('desc') is-invalid @enderror" name="desc"></textarea>
-                        @error('desc')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-                {{isset($success) && $success != '' ? $success : ''}}
             </div>
         </div>
         

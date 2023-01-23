@@ -1,12 +1,12 @@
-@extends('site.layouts.basic')
+@extends('app.layouts.basic')
 
 @section('title', $title)
 
 @section('content')
     <div class="container-fluid mt-5">
 
-        <div class="card">
-            <div class="card-header">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-light">
                 Edit List
             </div>
             <div class="card-body">
@@ -32,6 +32,7 @@
                             </span>
                         @enderror
                     </div>
+                    <a href="{{route('list.index')}}" class="btn btn-primary">Back</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
                 {{isset($success) && $success != '' ? $success : ''}}

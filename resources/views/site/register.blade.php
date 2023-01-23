@@ -5,8 +5,8 @@
 @section('content')
     <div class="container-fluid mt-5 mb-5">
 
-        <div class="card">
-            <div class="card-header">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-light">
                 Sign Up
             </div>
             <div class="card-body">

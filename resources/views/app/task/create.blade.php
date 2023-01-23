@@ -5,8 +5,8 @@
 @section('content')
     <div class="container-fluid mt-5">
 
-        <div class="card">
-            <div class="card-header">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-light">
                 Create Task
             </div>
             <div class="card-body">
@@ -49,7 +49,6 @@
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-                {{isset($success) && $success != '' ? $success : ''}}
             </div>
         </div>
         

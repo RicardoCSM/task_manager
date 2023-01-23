@@ -58,6 +58,12 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'task' => 'required|string|min:3|max:200',
+            'completion_deadline' => 'required|date',
+            'list_id' => 'nullable|exists:lists,id',
+        ]);
+
         $data = $request->all('task', 'completion_deadline', 'list_id');
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
@@ -109,6 +115,12 @@ class TaskController extends Controller
         if(!$task->user_id == $user->id){
             return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
+        
+        $request->validate([
+            'task' => 'required|string|min:3|max:200',
+            'completion_deadline' => 'required|date',
+            'list_id' => 'nullable|exists:lists,id',
+        ]);
 
         $task->update($request->all());
         return view('app.task.show', ['title' => $task->task, 'task' => $task]);

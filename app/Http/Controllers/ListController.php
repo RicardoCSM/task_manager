@@ -44,6 +44,10 @@ class ListController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'list' => 'required|string|min:3|max:200',
+        ]);
+
         $data = $request->all('list', 'desc');
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
@@ -100,6 +104,10 @@ class ListController extends Controller
         if(!$list->user_id == $user->id){
             return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
+        
+        $request->validate([
+            'list' => 'required|string|min:3|max:200',
+        ]);
 
         $list->update($request->all());
         return redirect()->route('list.show', ['list' => $list]);

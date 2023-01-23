@@ -6,8 +6,8 @@
 
 <div class="container mt-5">
     
-   <table class="table table-bordered border-primary">
-        <thead>
+   <table class="table">
+        <thead class="bg-primary text-light">
             <tr>
                 <th scope="col">List</th>
                 <th scope="col">Description</th>

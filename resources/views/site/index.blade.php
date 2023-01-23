@@ -5,7 +5,7 @@
 @section('content')
     
     <section id="index">
-      <div class="container">
+      <div class="container p-2">
         <div class="row">
           <div class="col-md-6 d-flex">
             <div class="align-self-center">
