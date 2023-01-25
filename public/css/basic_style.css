@@ -13,6 +13,14 @@
     color: #1768d1;
 }
 
+.dropdown-item {
+    font-size: 12px;
+}
+
+.dropdown a:hover {
+    color: #FFF;
+}
+
 .img-fluid {
     width: 100%;
     height: auto;

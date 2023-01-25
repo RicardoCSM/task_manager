@@ -21,8 +21,15 @@ class TaskController extends Controller
         
         $search = $request->search ?? '';
         $order = $request->orderby ?? 'created_at';
-        
+        $status = $request->status ?? 'pending';
+
         $tasks = Task::where('user_id', $user->id);
+
+        if($status == 'pending') {
+            $tasks = $tasks->where('checked', 0);
+        } else if($status == 'completed') {
+            $tasks = $tasks->where('checked', 1);
+        }
 
         if($search) {
             $tasks = $tasks->where('task', 'like', "%$search%");
@@ -91,10 +98,13 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $list_id = $task->list_id;
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
+        $lists = TaskList::where('user_id', $user->id)->get();
+
         if($task->user_id == $user->id){
-            return view('app.task.edit', ['title' => 'Edit', 'task' => $task]);
+            return view('app.task.edit', ['title' => 'Edit', 'task' => $task, 'lists' => $lists, 'selected_list_id' => $list_id]);
         } else {
             return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
@@ -136,12 +146,43 @@ class TaskController extends Controller
     {
         $email = $_SESSION['email'];
         $user = User::where('email', $email)->first();
-
         if(!$task->user_id == $user->id){
             return view('app.task.access_denied', ['title' => 'Access Denied']);
         }
 
         $task->delete();
+        return redirect()->route('task.index');
+    }
+
+    public function check(Request $request) 
+    {
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();  
+        $task = Task::where('id', $request->task)->first();
+
+        if(!$task->user_id == $user->id){
+            return view('app.task.access_denied', ['title' => 'Access Denied']);
+        }
+
+        $task->checked = 1;
+
+        $task->save();
+        return redirect()->route('task.index');
+    }
+
+    public function uncheck(Request $request) 
+    {
+        $email = $_SESSION['email'];
+        $user = User::where('email', $email)->first();  
+        $task = Task::where('id', $request->task)->first();
+
+        if(!$task->user_id == $user->id){
+            return view('app.task.access_denied', ['title' => 'Access Denied']);
+        }
+
+        $task->checked = 0;
+
+        $task->save();
         return redirect()->route('task.index');
     }
 }

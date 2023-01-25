@@ -10,12 +10,19 @@ class FilterController extends Controller
         $request->validate(['orderby' => 'in:created_at,completion_deadline']);
         $search = $request->input('search');
         $orderby = $request->input('orderby');
-        return redirect()->route('task.index', ['search' => $search, 'orderby' => $orderby]);
+        $status = $request->input('status');
+        return redirect()->route('task.index', ['search' => $search, 'orderby' => $orderby, 'status' => $status]);
     }
 
     public function search(Request $request) {
         $search = $request->input('search');
         $orderby = $request->input('orderby');
-        return redirect()->route('task.index', ['search' => $search, 'orderby' => $orderby]);
+        $status = $request->input('status');
+        return redirect()->route('task.index', ['search' => $search, 'orderby' => $orderby, 'status' => $status]);
+    }
+
+    public function status(Request $request) {
+        $status = $request->status;
+        return redirect()->route('task.index', ['status' => $status]);
     }
 }

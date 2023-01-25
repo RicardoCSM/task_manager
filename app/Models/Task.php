@@ -13,7 +13,8 @@ class Task extends Model
         'task',
         'completion_deadline',
         'user_id',
-        'list_id'
+        'list_id',
+        'checked'
     ];
 
     public function user() {
