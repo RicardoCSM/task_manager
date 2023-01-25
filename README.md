@@ -13,7 +13,7 @@ Task Manager was made using Docker with Laravel framework version 9 and PHP 8.1.
 Please check the official laravel installation guide for server requirements before you start. [Official Documentation](https://laravel.com/docs/9.x/installation)
 
 ```
-git@github.com:RicardoCSM/task_manager.git
+git clone git@github.com:RicardoCSM/task_manager.git
 cd task_manager
 ```
 
