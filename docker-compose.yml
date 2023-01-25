@@ -1,0 +1,65 @@
+version: "3.7"
+
+services:
+
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on: 
+            - redis
+        networks: 
+            - laravel-9
+    
+    webserver:
+        image: nginx:alpine
+        restart: always
+        ports: 
+            - "8989:80"
+        volumes: 
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks: 
+            - laravel-9
+
+    db:
+        image: mysql
+        restart: always
+        environment: 
+            # MYSQL_PASSWORD: ${DB_PASSWORD}
+            # MYSQL_USER: ${DB_USERNAME}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        volumes: 
+            - ./.docker/dbdata:/var/lib/mysql
+        ports: 
+            - "33060:3306"
+        networks: 
+            - laravel-9
+
+    queue:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        command: "php artisan queue:work"
+        volumes: 
+            - ./:/var/www
+        depends_on: 
+            - redis
+            - app
+        networks: 
+            - laravel-9
+
+    redis:
+        image: redis:latest
+        networks: 
+            - laravel-9
+
+networks: 
+    laravel-9:
+        driver: bridge
