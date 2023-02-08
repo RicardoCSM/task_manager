@@ -31,7 +31,7 @@ To start the containers
 
 ```bash
 docker-compose build # only the first time
-docker-compose up
+docker-compose up -d
 ```
 
 If you are running the application for the first time you should
